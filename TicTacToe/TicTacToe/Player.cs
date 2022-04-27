@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TicTacToe
 {
+    /// <summary>
+    /// Represents a player in the game of TicTacToe.
+    /// </summary>
     class Player
     {
         static int numberOfPlayers = 0;
@@ -16,11 +17,13 @@ namespace TicTacToe
         public int PlayerNumber { get { return playerNumber; } }
         public List<int> Moves { get { return moves; } }
         public int LastMove { get { return moves[moves.Count - 1]; } }
+        public bool HasWon { get; set; }
 
         public Player()
         {
             numberOfPlayers++;
             playerNumber = numberOfPlayers;
+            HasWon = false;
         }
 
         public override string ToString()
@@ -31,15 +34,35 @@ namespace TicTacToe
             return line1 + line2;
         }
 
-        public void MakeMove(int fieldNumber)
+        public void MakeMove(GameBoard gameBoard)
         {
-            moves.Add(fieldNumber);
+            bool fieldIsFree;
+
+            Console.Write($"Make a move, player {playerNumber} >> ");
+            int fieldNumber = Convert.ToInt32(Console.ReadLine());
+
+            do
+            {
+                fieldIsFree = gameBoard.Field(fieldNumber) == 0;
+
+                if (fieldIsFree)
+                {
+                    moves.Add(fieldNumber);
+                    gameBoard.LogMove(playerNumber, LastMove);
+                    gameBoard.Print();
+                }
+                else
+                {
+                    Console.Write("Please pick a free field >> ");
+                    fieldNumber = Convert.ToInt32(Console.ReadLine());
+                }
+            }
+            while (!fieldIsFree);
         }
 
         private string MovesToString()
         {
             StringBuilder sbMoves = new StringBuilder();
-
             foreach (int move in moves)
             {
                 sbMoves.Append($"{move}, ");

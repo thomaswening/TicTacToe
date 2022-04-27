@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace TicTacToe
 {
+    /// <summary>
+    /// Represents the 3x3 game board for TicTacToe
+    /// </summary>
     class GameBoard
     {
         private int[] fields;
 
-        public GameBoard()
-        {
-            fields = new int[9];
-        }
+        public GameBoard() => fields = new int[9];
 
+        /// <summary>
+        /// Prints the game board to the console
+        /// </summary>
         public void Print()
         {
             Console.Write("\n\n");
@@ -40,7 +43,12 @@ namespace TicTacToe
             }
         }
 
-        public void LogMoves(int playerNumber, int fieldNumber)
+        /// <summary>
+        /// Logs the players' moves into the game board.
+        /// </summary>
+        /// <param name="playerNumber">Number of the player whose moves are to be logged.</param>
+        /// <param name="fieldNumber">Number of the game board's field where the player's move is to be logged.</param>
+        public void LogMove(int playerNumber, int fieldNumber)
         {
             switch (playerNumber)
             {
@@ -53,5 +61,7 @@ namespace TicTacToe
                     break;
             }
         }
+
+        public int Field(int fieldNumber) => fields[fieldNumber - 1];
     }
 }

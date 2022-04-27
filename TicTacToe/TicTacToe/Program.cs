@@ -1,29 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TicTacToe
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            int gameIteration = 1;
+            bool gameIsOver = false;
 
             GameBoard gameBoard = new GameBoard();
+            WinningLines winningLines = new WinningLines();
             Player player1 = new Player();
             Player player2 = new Player();
 
-            player1.MakeMove(1);
-            player2.MakeMove(3);
+            while (gameIteration <= 9 && !gameIsOver)
+            {
+                Console.Clear();
+                gameBoard.Print();
 
-            Console.WriteLine(player1);
-            Console.WriteLine(player2);
+                if (gameIteration % 2 != 0)
+                {
+                    player1.MakeMove(gameBoard);
+                    gameIsOver = winningLines.CheckForWinner(player1);
+                }
+                else
+                {
+                    player2.MakeMove(gameBoard);
+                    gameIsOver = winningLines.CheckForWinner(player2);
+                }
 
-            gameBoard.LogMoves(player1.PlayerNumber, player1.LastMove);
-            gameBoard.LogMoves(player2.PlayerNumber, player2.LastMove);
-            gameBoard.Print();
+                gameIteration++;
+            }
+
+            Console.Write("Play another round? (y/n) >> ");
+            char response = Convert.ToChar(Console.ReadLine());
+            switch (response)
+            {
+                case 'y':
+                    break;
+                case 'n':
+                    Console.WriteLine("Well, goodbye then! :)");
+                    gameIsOver = true;
+                    break;
+            }
         }
     }
 }
